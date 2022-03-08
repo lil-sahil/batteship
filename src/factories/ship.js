@@ -15,9 +15,10 @@ export let shipFactory = (shipLength) => {
   };
 
   // Check if the ship has sunk
-  let isSunk = (shipModel = ship) => {
+  let isSunk = () => {
+    console.log(ship);
     const initialVal = 0;
-    let checkhits = shipModel.reduce((prevVal, currVal) => {
+    let checkhits = ship.reduce((prevVal, currVal) => {
       if (currVal === "X") {
         prevVal += 1;
         return prevVal;
@@ -25,12 +26,21 @@ export let shipFactory = (shipLength) => {
       return prevVal;
     }, initialVal);
 
-    if (checkhits < shipModel.length) {
+    if (checkhits < ship.length) {
       return false;
     } else {
       return true;
     }
   };
 
-  return { registerHit, isSunk };
+  // helper functions only used for testing.
+  let setShip = (shipArray) => {
+    ship = shipArray;
+  };
+
+  let getShip = () => {
+    return ship;
+  };
+
+  return { registerHit, isSunk, setShip, getShip };
 };
