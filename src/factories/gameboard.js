@@ -24,16 +24,23 @@ export let gameboardFactory = () => {
     shipLength,
     orientation = horizontal
   ) => {
-    rowSlice = gameboard[`row_${rowNumber}`];
+    let rowSlice = gameboard[`row_${rowNumber}`];
 
     if (!isLegalPlacement(rowNumber, startingCol, shipLength, orientation))
       return;
 
+    // Place horizontally
     gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
-      if (ind >= startingCol && ind <= startingCol + shipLength) {
+      if (ind >= startingCol && ind < startingCol + shipLength) {
         return "-";
+      } else {
+        return "";
       }
     });
+
+    // place Vertically
+
+    console.table(gameboard);
 
     return gameboard;
   };
