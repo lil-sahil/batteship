@@ -24,21 +24,27 @@ export let gameboardFactory = () => {
     shipLength,
     orientation = horizontal
   ) => {
-    let rowSlice = gameboard[`row_${rowNumber}`];
-
     if (!isLegalPlacement(rowNumber, startingCol, shipLength, orientation))
-      return;
+      return gameboard;
 
     // Place horizontally
-    gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
-      if (ind >= startingCol && ind < startingCol + shipLength) {
-        return "-";
-      } else {
-        return "";
-      }
-    });
+    if (orientation === "horizontal") {
+      let rowSlice = gameboard[`row_${rowNumber}`];
+      gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
+        if (ind >= startingCol && ind < startingCol + shipLength) {
+          return "-";
+        } else {
+          return "";
+        }
+      });
+    }
 
     // place Vertically
+    else if (orientation === "vertical") {
+      for (let i = rowNumber; i < rowNumber + shipLength; i++) {
+        gameboard[`row_${i}`][startingCol] = "-";
+      }
+    }
 
     console.table(gameboard);
 
@@ -67,27 +73,30 @@ export let gameboardFactory = () => {
 
     // Check vertical orientation
     if (orientation == "vertical") {
-      // get gameboard spots
+      // Return false if out of board
+      if (startingRow + shipLength > DIMENSIONS.cols) return false;
 
+      // get gameboard spots
       for (let i = startingRow; i < startingRow + shipLength; i++) {
         gameboardSpots.push(gameboard[`row_${i}`][startingCol]);
       }
 
       // Check if enough room in the vertical direction and empty spaces
-      if (startingRow + shipLength < DIMENSIONS.cols && isEmpty(gameboardSpots))
-        return true;
+      if (isEmpty(gameboardSpots)) return true;
       return false;
     }
 
     if (orientation === "horizontal") {
+      // return false if out of board
+      if (startingCol + shipLength > DIMENSIONS.rows) return false;
+
       for (let i = startingCol; i < startingCol + shipLength; i++) {
         gameboardSpots.push(gameboard[`row_${i}`][startingCol]);
       }
 
       // Check if enough room in the horizontal direction and empty spaces
-      if (startingCol + shipLength < DIMENSIONS.rows && isEmpty(gameboardSpots))
-        return true;
-      else false;
+      if (isEmpty(gameboardSpots)) return true;
+      return false;
     }
   };
 
