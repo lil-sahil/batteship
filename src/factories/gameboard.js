@@ -7,6 +7,9 @@ export let gameboardFactory = () => {
     cols: 10,
   };
 
+  // User selected spots
+  let spotsPlayed = [];
+
   // Gameboard grid
   let gameboard = {};
 
@@ -23,12 +26,8 @@ export let gameboardFactory = () => {
   };
 
   // Place ships defined by coordinate
-  let placeShip = (
-    rowNumber,
-    startingCol,
-    shipLength,
-    orientation = horizontal
-  ) => {
+  let placeShip = (rowNumber, startingCol, ship, orientation = horizontal) => {
+    let shipLength = ship.shipInfo["shipLength"];
     if (!isLegalPlacement(rowNumber, startingCol, shipLength, orientation))
       return gameboard;
 
@@ -37,7 +36,7 @@ export let gameboardFactory = () => {
       let rowSlice = gameboard[`row_${rowNumber}`];
       gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
         if (ind >= startingCol && ind < startingCol + shipLength) {
-          shipFactory().addShipCoordinate([`row_${rowNumber}`, ind]);
+          ship.addShipCoordinate([`row_${rowNumber}`, ind]);
           return "-";
         } else {
           return "";
@@ -49,7 +48,7 @@ export let gameboardFactory = () => {
     else if (orientation === "vertical") {
       for (let i = rowNumber; i < rowNumber + shipLength; i++) {
         gameboard[`row_${i}`][startingCol] = "-";
-        shipFactory().addShipCoordinate([`row_${i}`, startingCol]);
+        ship.addShipCoordinate([`row_${i}`, startingCol]);
       }
     }
 
@@ -104,7 +103,8 @@ export let gameboardFactory = () => {
       if (startingCol + shipLength > DIMENSIONS.rows) return false;
 
       for (let i = startingCol; i < startingCol + shipLength; i++) {
-        gameboardSpots.push(gameboard[`row_${i}`][startingCol]);
+        gameboardSpots.push(gameboard[`row_${startingRow}`][i]);
+        console.log(gameboardSpots);
       }
 
       // Check if enough room in the horizontal direction and empty spaces
@@ -114,7 +114,23 @@ export let gameboardFactory = () => {
   };
 
   // User Attack
-  // iterate through shipInfo coordinates and find if any hits
+  let attack = (rowNumber, colNumber, allShips) => {
+    // Check if user has already played the spot.
+    for (let spot of spotsPlayed) {
+      if (spot[0] === rowNumber && spot[1] === colNumber) return false;
+    }
+
+    for (let ship of allShips) {
+      for (let coordinate of ship.shipInfo["shipCoordinates"]) {
+        if (coordinate[0] === rowNumber && coordinate[1] === colNumber) {
+          ship.recieveAttack();
+        }
+      }
+    }
+
+    // Add the spot to the spotsplayed list
+    spotsPlayed.push([rowNumber, colNumber]);
+  };
 
   return { createGameboard, placeShip };
 };
