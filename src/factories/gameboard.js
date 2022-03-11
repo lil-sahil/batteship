@@ -1,3 +1,5 @@
+import { shipFactory } from "./ship";
+
 export let gameboardFactory = () => {
   // Dimension of the gameboard
   let DIMENSIONS = {
@@ -7,6 +9,9 @@ export let gameboardFactory = () => {
 
   // Gameboard grid
   let gameboard = {};
+
+  // Ship info where each ship is stored
+  let shipInfo = {};
 
   // Create the gameboard
   let createGameboard = () => {
@@ -32,6 +37,7 @@ export let gameboardFactory = () => {
       let rowSlice = gameboard[`row_${rowNumber}`];
       gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
         if (ind >= startingCol && ind < startingCol + shipLength) {
+          shipFactory().addShipCoordinate([`row_${rowNumber}`, ind]);
           return "-";
         } else {
           return "";
@@ -43,10 +49,17 @@ export let gameboardFactory = () => {
     else if (orientation === "vertical") {
       for (let i = rowNumber; i < rowNumber + shipLength; i++) {
         gameboard[`row_${i}`][startingCol] = "-";
+        shipFactory().addShipCoordinate([`row_${i}`, startingCol]);
       }
     }
 
     console.table(gameboard);
+
+    // store in ship info object
+    shipInfo[shipLength] = {
+      rowNumber: `row_${rowNumber}`,
+      colNumber: startingCol,
+    };
 
     return gameboard;
   };
@@ -99,6 +112,9 @@ export let gameboardFactory = () => {
       return false;
     }
   };
+
+  // User Attack
+  // iterate through shipInfo coordinates and find if any hits
 
   return { createGameboard, placeShip };
 };

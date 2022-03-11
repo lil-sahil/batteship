@@ -1,5 +1,13 @@
 import { shipFactory } from "../factories/ship";
 
+// RecieveAttack
+
+test("Recieve an attack", () => {
+  let shipOne = shipFactory(3);
+  shipOne.recieveAttack();
+  expect(shipOne.shipInfo["hitsTaken"]).toBe(1);
+});
+
 // isSunk
 test("Test for isSunk to be false", () => {
   let shipOne = shipFactory(5);
@@ -7,21 +15,17 @@ test("Test for isSunk to be false", () => {
 });
 
 test("Test for isSunk to be true", () => {
-  let shipOne = shipFactory(5);
-  shipOne.setShip(["X", "X", "X", "X", "X"]);
+  let shipOne = shipFactory(2);
+  shipOne.recieveAttack();
+  shipOne.recieveAttack();
+
   expect(shipOne.isSunk()).toBe(true);
 });
 
-test("Test for isSunk to be false", () => {
-  let shipOne = shipFactory(3);
-  shipOne.setShip(["X", "", "X"]);
-  expect(shipOne.isSunk()).toBe(false);
-});
+// Add ship coordinate
+test("Test to add coordinate", () => {
+  let shipOne = shipFactory(2);
+  shipOne.addShipCoordinate(["row_1", 0]);
 
-// Register Hit
-
-test("Register a Hit", () => {
-  let shipOne = shipFactory(3);
-  shipOne.registerHit(0);
-  expect(shipOne.getShip()).toStrictEqual(["X", "", ""]);
+  expect(shipOne.shipInfo["shipCoordinates"]).toStrictEqual([["row_1", 0]]);
 });
