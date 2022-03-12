@@ -29,7 +29,7 @@ export let gameboardFactory = () => {
   let placeShip = (rowNumber, startingCol, ship, orientation = horizontal) => {
     let shipLength = ship.shipInfo["shipLength"];
     if (!isLegalPlacement(rowNumber, startingCol, shipLength, orientation))
-      return gameboard;
+      return false;
 
     // Place horizontally
     if (orientation === "horizontal") {
