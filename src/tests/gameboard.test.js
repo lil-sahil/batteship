@@ -163,3 +163,112 @@ test("Place multiple ships", () => {
   };
   expect(game.placeShip(1, 0, ship2, "vertical")).toEqual(answer);
 });
+
+// Attack
+test("Play a spot specified by a coordinate", () => {
+  let game = gameboardFactory();
+  game.createGameboard();
+  game.attack(1, 0, []);
+
+  expect(game.spotsPlayed).toEqual([[1, 0]]);
+});
+
+test("Try to play a spot already played and ensure the coordinate is not saved twice", () => {
+  let game = gameboardFactory();
+  game.createGameboard();
+  // First attack
+  game.attack(1, 0, []);
+
+  // Second attack at the same coordinate
+  game.attack(1, 0, []);
+
+  expect(game.spotsPlayed).toEqual([[1, 0]]);
+});
+
+test("Try to play a spot already played and ensure return false", () => {
+  let game = gameboardFactory();
+  game.createGameboard();
+  // First attack
+  game.attack(1, 0, []);
+
+  // Second attack at the same coordinate
+
+  expect(game.attack(1, 0, [])).toBe(false);
+});
+
+test("Attack a ship", () => {
+  // Initialize Gameboard
+  let game = gameboardFactory();
+  game.createGameboard();
+
+  // Initialize ship
+  let ship1 = shipFactory(3);
+
+  // Place ship on gameboard
+  game.placeShip(0, 0, ship1, "horizontal");
+
+  // Attack ship once
+  game.attack(0, 0, [ship1]);
+
+  // Attack ship twice
+  game.attack(0, 1, [ship1]);
+
+  // Expect hits taken to be 1
+  expect(ship1.shipInfo["hitsTaken"]).toBe(2);
+});
+
+// AllSunk
+test("Determine if all boats have sunk", () => {
+  // Initialize Gameboard
+  let game = gameboardFactory();
+  game.createGameboard();
+
+  // Initialize ship
+  let ship1 = shipFactory(3);
+  let ship2 = shipFactory(3);
+
+  // Place ship on gameboard
+  game.placeShip(0, 0, ship1, "horizontal");
+  game.placeShip(1, 0, ship2, "horizontal");
+
+  // Attack ships once
+  game.attack(0, 0, [ship1]);
+  game.attack(1, 0, [ship2]);
+
+  // Attack ship twice
+  game.attack(0, 1, [ship1]);
+  game.attack(1, 1, [ship2]);
+
+  // Attack ship three times - ship should sink
+  game.attack(0, 2, [ship1]);
+  game.attack(1, 2, [ship2]);
+
+  // Expect gameboard to report that all ships have sunk
+  expect(game.allSunk([ship1, ship2])).toBe(true);
+});
+
+test("Determine not all boats have sunk", () => {
+  // Initialize Gameboard
+  let game = gameboardFactory();
+  game.createGameboard();
+
+  // Initialize ship
+  let ship1 = shipFactory(3);
+  let ship2 = shipFactory(3);
+
+  // Place ship on gameboard
+  game.placeShip(0, 0, ship1, "horizontal");
+  game.placeShip(1, 0, ship2, "horizontal");
+
+  // Attack ship once
+  game.attack(0, 0, [ship1]);
+
+  // Attack ship twice
+  game.attack(0, 1, [ship1]);
+
+  // Attack ship three times - ship should sink
+  game.attack(0, 2, [ship1]);
+
+  // Expect gameboard to report that all ships have sunk
+  expect(game.allSunk([ship1, ship2])).toBe(false);
+});

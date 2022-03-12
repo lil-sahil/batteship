@@ -9,6 +9,7 @@ export let shipFactory = (shipLength) => {
   // Check if the ship has sunk
   let isSunk = () => {
     if (shipInfo.hitsTaken >= shipLength) {
+      shipInfo["isSunk"] = true;
       return true;
     }
     return false;
@@ -17,6 +18,7 @@ export let shipFactory = (shipLength) => {
   // Recieve attack
   let recieveAttack = () => {
     shipInfo.hitsTaken += 1;
+    isSunk();
   };
 
   // Add shipCoordinates after placement

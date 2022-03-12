@@ -36,7 +36,7 @@ export let gameboardFactory = () => {
       let rowSlice = gameboard[`row_${rowNumber}`];
       gameboard[`row_${rowNumber}`] = rowSlice.map((el, ind) => {
         if (ind >= startingCol && ind < startingCol + shipLength) {
-          ship.addShipCoordinate([`row_${rowNumber}`, ind]);
+          ship.addShipCoordinate([rowNumber, ind]);
           return "-";
         } else {
           return "";
@@ -48,11 +48,11 @@ export let gameboardFactory = () => {
     else if (orientation === "vertical") {
       for (let i = rowNumber; i < rowNumber + shipLength; i++) {
         gameboard[`row_${i}`][startingCol] = "-";
-        ship.addShipCoordinate([`row_${i}`, startingCol]);
+        ship.addShipCoordinate([i, startingCol]);
       }
     }
 
-    console.table(gameboard);
+    // console.table(gameboard);
 
     // store in ship info object
     shipInfo[shipLength] = {
@@ -104,7 +104,7 @@ export let gameboardFactory = () => {
 
       for (let i = startingCol; i < startingCol + shipLength; i++) {
         gameboardSpots.push(gameboard[`row_${startingRow}`][i]);
-        console.log(gameboardSpots);
+        // console.log(gameboardSpots);
       }
 
       // Check if enough room in the horizontal direction and empty spaces
@@ -132,5 +132,16 @@ export let gameboardFactory = () => {
     spotsPlayed.push([rowNumber, colNumber]);
   };
 
-  return { createGameboard, placeShip };
+  // Determine if all ships have sunk
+  let allSunk = (allShips) => {
+    let initialVal = 0;
+    let counter = allShips.reduce((prev, cur) => {
+      if (cur.shipInfo["isSunk"] === true) return (prev += 1);
+      if (cur.shipInfo["isSunk"] === false) return (prev -= 1);
+    }, initialVal);
+
+    return counter <= 0 ? false : true;
+  };
+
+  return { createGameboard, placeShip, attack, spotsPlayed, allSunk };
 };
