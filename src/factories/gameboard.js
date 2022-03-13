@@ -50,8 +50,8 @@ export let gameboardFactory = () => {
       }
     }
 
-    console.table(gameboard);
-    console.log(ship.shipInfo);
+    // console.table(gameboard);
+    // console.log(ship.shipInfo);
 
     return gameboard;
   };
