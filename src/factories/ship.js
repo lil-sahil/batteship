@@ -33,13 +33,3 @@ export let shipFactory = (shipLength) => {
     recieveAttack,
   };
 };
-
-export let shipAttributes = () => {
-  return {
-    carrier: 5,
-    Battleship: 4,
-    Cruiser: 3,
-    Submarine: 3,
-    Destroyer: 2,
-  };
-};
