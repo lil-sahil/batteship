@@ -1,10 +1,11 @@
-import { shipFactory } from "./ship";
+// Utils
+import { gameParamters } from "../utils/gameParameters";
 
 export let gameboardFactory = () => {
   // Dimension of the gameboard
   let DIMENSIONS = {
-    rows: 10,
-    cols: 10,
+    rows: gameParamters()["rows"].length,
+    cols: gameParamters()["cols"].length,
   };
 
   // User selected spots
@@ -12,9 +13,6 @@ export let gameboardFactory = () => {
 
   // Gameboard grid
   let gameboard = {};
-
-  // Ship info where each ship is stored
-  let shipInfo = {};
 
   // Create the gameboard
   let createGameboard = () => {
@@ -52,13 +50,8 @@ export let gameboardFactory = () => {
       }
     }
 
-    // console.table(gameboard);
-
-    // store in ship info object
-    shipInfo[shipLength] = {
-      rowNumber: `row_${rowNumber}`,
-      colNumber: startingCol,
-    };
+    console.table(gameboard);
+    console.log(ship.shipInfo);
 
     return gameboard;
   };
