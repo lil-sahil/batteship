@@ -3,3 +3,67 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/* Main Container */
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-areas:
+    "title title"
+    "player-one player-two"
+    "info info";
+  column-gap: 100px;
+  height: 100vh;
+  width: 80%;
+  margin: auto;
+}
+
+/* Title */
+section#title {
+  grid-area: title;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Gameboard */
+.gameboard {
+  height: 80%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
+/* Gameboard Cell */
+.gameboard-cell {
+  height: 100%;
+  width: 100%;
+  border: black 1px solid;
+  aspect-ratio: 1;
+}
+
+/* Section Player1 */
+section#player-one {
+  grid-area: player-one;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Section Player2 */
+section#player-two {
+  grid-area: player-two;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Section information */
+section#information {
+  grid-area: info;
+}
