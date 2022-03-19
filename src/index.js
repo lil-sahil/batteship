@@ -1,6 +1,7 @@
 import { gameboardFactory } from "./factories/gameboard";
 import { playerFactory } from "./factories/player";
 import { mainDisplay } from "./components/displayAllComponents";
+import { showShips } from "./components/show_ships";
 
 let mainApp = (() => {
   // Component Display
@@ -21,4 +22,6 @@ let mainApp = (() => {
   // Initialize Game
   player1.initialSetUp();
   player2.initialSetUp();
+
+  showShips.controller(player1.ships);
 })();
