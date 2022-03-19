@@ -20,7 +20,6 @@ export let gameboardComponent = (() => {
         gameboardDiv.appendChild(gameCell);
       }
     }
-
     return gameboardDiv;
   };
 

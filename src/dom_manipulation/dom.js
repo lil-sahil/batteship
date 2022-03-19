@@ -8,3 +8,12 @@ export let gameboardCellsPlayerOne = () => {
     "section#player-one .gameboard .gameboard-cell"
   );
 };
+
+// Add click events to gameboard cells
+export let gameboardCellEventListner = () => {
+  gameboardCellsPlayerOne().forEach((cell) => {
+    cell.addEventListener("click", (e) => {
+      return e.target;
+    });
+  });
+};

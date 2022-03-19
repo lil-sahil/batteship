@@ -2,6 +2,7 @@ import { gameboardFactory } from "./factories/gameboard";
 import { playerFactory } from "./factories/player";
 import { mainDisplay } from "./components/displayAllComponents";
 import { showShips } from "./components/show_ships";
+import { gameboardCellEventListner } from "./dom_manipulation/dom";
 
 let mainApp = (() => {
   // Component Display
@@ -16,7 +17,7 @@ let mainApp = (() => {
   gameboard2.createGameboard();
 
   // Initialize players
-  let player1 = playerFactory(true, gameboard1);
+  let player1 = playerFactory(false, gameboard1);
   let player2 = playerFactory(true, gameboard2);
 
   // Initialize Game

@@ -1,4 +1,6 @@
 import { shipFactory } from "./ship";
+import { gameboardCellsPlayerOne } from "../dom_manipulation/dom";
+import { showShips } from "../components/show_ships";
 
 // Utils
 import { randomChoice } from "../utils/randomPicker";
@@ -36,6 +38,31 @@ export let playerFactory = (isComputer, ownGameboard) => {
           orientation = randomChoice(gameParamters().orientation);
         }
       }
+      return true;
+    } else if (isComputer === false) {
+      let shipIndex = 0;
+
+      gameboardCellsPlayerOne().forEach((cell) => {
+        cell.addEventListener("click", (e) => {
+          if (shipIndex >= ships.length) return true;
+          let rowCoordinate = e.target.dataset.row;
+          let colCoordinate = e.target.dataset.col;
+          let orientation = "horizontal";
+
+          if (
+            ownGameboard.placeShip(
+              parseInt(rowCoordinate),
+              parseInt(colCoordinate),
+              ships[shipIndex],
+              orientation
+            )
+          ) {
+            shipIndex++;
+            showShips.controller(ships);
+            console.log(shipIndex);
+          }
+        });
+      });
     }
   };
 
